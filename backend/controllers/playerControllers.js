@@ -8,7 +8,7 @@ export const addNewPlayer = async (req, res) => {
   try {
     const newPlayer = new Player(req.body);
     await newPlayer.save();
-    res.status(400).json(newPlayer);
+    res.status(200).json(newPlayer);
   } catch (error) {
     res.status(401).json({ err: error.message });
   }

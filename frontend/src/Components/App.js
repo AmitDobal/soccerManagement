@@ -3,7 +3,6 @@ import React from "react";
 import PlayerForm from "./Player/PlayerForm";
 import PlayerList from "./Player/PlayerList";
 import PlayerSingle from "./Player/PlayerSingle";
-import { PlayerCard } from "./PlayerCard";
 import axios from "axios";
 import NavBar from "./PageComponents/NavBar";
 
@@ -16,6 +15,7 @@ class App extends React.Component {
     };
     this.updateCurrentPlayer = this.updateCurrentPlayer.bind(this);
     this.fetchAllPlayers = this.fetchAllPlayers.bind(this);
+    this.addPlayer = this.addPlayer.bind(this);
   }
 
   componentDidMount() {
@@ -26,7 +26,7 @@ class App extends React.Component {
     try {
       const URL = "http://localhost:3001/players";
       const players = await axios.get(URL);
-      console.log("PLAYERS: ", this.state);
+      // console.log("PLAYERS APP.js FETCH : ", this.state);
       this.setState({
         players: players.data,
       });
@@ -40,7 +40,16 @@ class App extends React.Component {
       currentPlayer: item,
     });
   }
-
+  addPlayer(item) {
+    console.log("APP.jS addPlayer item: ", item);
+    const players = this.state.players;
+    console.log("APP.jS players: ", players)
+    players.push(item);
+    console.log("APP.jS addPlayer players: ", players)
+    this.setState({
+      players,
+    });
+  }
   render() {
     return (
       <div className="container-fluid">
@@ -48,19 +57,19 @@ class App extends React.Component {
           <NavBar />
         </div>
         <div className="row">
-          <div className="col s3">
+          <div className="col s4">
             <PlayerList
               players={this.state.players}
               updateCurrentPlayer={this.updateCurrentPlayer}
             />
           </div>
-          <div className="col s9">
+          <div className="col s8">
             <PlayerSingle player={this.state.currentPlayer} />
           </div>
         </div>
         <div className="row">
-          <div className="col s3">
-            <PlayerForm />
+          <div className="col s12">
+            <PlayerForm addPlayer={this.addPlayer} />
           </div>
         </div>
       </div>
